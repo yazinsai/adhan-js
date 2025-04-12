@@ -1,5 +1,6 @@
 import CalculationParameters from './CalculationParameters';
 import { Rounding } from './Rounding';
+import { Madhab } from './Madhab';
 
 const CalculationMethod = {
   // Muslim World League
@@ -100,6 +101,28 @@ const CalculationMethod = {
   // Other
   Other() {
     return new CalculationParameters('Other', 0, 0);
+  },
+
+  // Zubara (Bahrain)
+  Zubara() {
+    // Zubara method uses 18° angles for both Fajr and Isha
+    const params = new CalculationParameters('Zubara', 18, 18);
+    params.madhab = Madhab.Shafi; // Standard Asr shadow length = 1
+
+    // Minute adjustments to match official Bahrain timetable:
+    // Fajr/Sunrise use easternmost point (-1 min), others use westernmost point (+1 min)
+    // Dhuhr has +1 min to ensure full solar disk past zenith
+    params.methodAdjustments = {
+      ...params.methodAdjustments,
+      fajr: -1, // Fajr ~1 min earlier (eastmost point)
+      sunrise: -1, // Sunrise ~1 min earlier (eastmost point)
+      dhuhr: 1, // Dhuhr +1 min (wait for full solar disk past zenith)
+      asr: -1,
+      maghrib: +1,
+      isha: -1,
+    };
+
+    return params;
   },
 } as const;
 
