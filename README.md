@@ -127,6 +127,32 @@ const sunnahTimes = new SunnahTimes(prayerTimes);
 
 [![Edit Adhan Example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/adhan-example-88v549?fontsize=14&hidenavigation=1&theme=dark)
 
+### Zubara Method Example (Bahrain)
+
+```ts
+import { Coordinates, CalculationMethod, PrayerTimes } from 'adhan';
+import moment from 'moment-timezone';
+
+// Manama, Bahrain coordinates
+const coordinates = new Coordinates(26.2285, 50.586);
+// Use the Zubara calculation method for Bahrain
+const params = CalculationMethod.Zubara();
+const date = new Date();
+const prayerTimes = new PrayerTimes(coordinates, date, params);
+
+// Format prayer times for Bahrain time zone
+const fajrTime = moment(prayerTimes.fajr).tz('Asia/Bahrain').format('h:mm A');
+const sunriseTime = moment(prayerTimes.sunrise)
+  .tz('Asia/Bahrain')
+  .format('h:mm A');
+const dhuhrTime = moment(prayerTimes.dhuhr).tz('Asia/Bahrain').format('h:mm A');
+const asrTime = moment(prayerTimes.asr).tz('Asia/Bahrain').format('h:mm A');
+const maghribTime = moment(prayerTimes.maghrib)
+  .tz('Asia/Bahrain')
+  .format('h:mm A');
+const ishaTime = moment(prayerTimes.isha).tz('Asia/Bahrain').format('h:mm A');
+```
+
 ### Convenience Utilities
 
 The `PrayerTimes` object has functions for getting the current prayer and the next prayer. You can also get the time for a specified prayer, making it

@@ -121,11 +121,17 @@ test('Verifying the angles defined by the calculation method', () => {
   expect(p13.ishaInterval).toBe(0);
   expect(p13.method).toBe('Turkey');
 
-  const p14 = new CalculationParameters(null, 18, 17);
+  const p14 = CalculationMethod.Zubara();
   expect(p14.fajrAngle).toBe(18);
-  expect(p14.ishaAngle).toBe(17);
+  expect(p14.ishaAngle).toBe(18);
   expect(p14.ishaInterval).toBe(0);
-  expect(p14.method).toBe('Other');
+  expect(p14.method).toBe('Zubara');
+
+  const p15 = new CalculationParameters(null, 18, 17);
+  expect(p15.fajrAngle).toBe(18);
+  expect(p15.ishaAngle).toBe(17);
+  expect(p15.ishaInterval).toBe(0);
+  expect(p15.method).toBe('Other');
 });
 
 test('calculating prayer times', () => {
@@ -304,6 +310,22 @@ test('calculating times for the singapore method', () => {
   expect(moment(p.isha).tz('Asia/Kuala_Lumpur').format('h:mm A')).toBe(
     '8:41 PM',
   );
+});
+
+test('calculating times for the Zubara method (Bahrain)', () => {
+  const date = new Date(2025, 3, 11); // April 11, 2025 (matches the screenshot date)
+  const params = CalculationMethod.Zubara();
+  const p = new PrayerTimes(
+    new Coordinates(26.23, 50.58), // Manama, Bahrain
+    date,
+    params,
+  );
+  expect(moment(p.fajr).tz('Asia/Bahrain').format('h:mm A')).toBe('3:58 AM');
+  expect(moment(p.sunrise).tz('Asia/Bahrain').format('h:mm A')).toBe('5:17 AM');
+  expect(moment(p.dhuhr).tz('Asia/Bahrain').format('h:mm A')).toBe('11:40 AM');
+  expect(moment(p.asr).tz('Asia/Bahrain').format('h:mm A')).toBe('3:09 PM');
+  expect(moment(p.maghrib).tz('Asia/Bahrain').format('h:mm A')).toBe('6:00 PM');
+  expect(moment(p.isha).tz('Asia/Bahrain').format('h:mm A')).toBe('7:18 PM');
 });
 
 test('getting the time for a given prayer', () => {
